@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>cli-Fu</title>
+<meta name="author" content="(Benjamin Turner)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/css/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/css/theme/none.css" id="theme"/>
+
+<link rel="stylesheet" href="style.css"/>
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = './reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<section>
+<section id="slide-intro">
+<h2 id="intro"><a id="org8838c3d"></a>CLI-FU!</h2>
+
+</section>
+</section>
+<section>
+<section id="slide-history">
+<h2 id="history"><a id="org7ffad30"></a>First: History</h2>
+</section>
+<section id="slide-thompson-ritchie-working">
+<h3 id="thompson-ritchie-working"><a id="orgcf5f741"></a></h3>
+
+<div class="figure">
+<p><img src="./img/959px-Ken_Thompson_sitting_and_Dennis_Ritchie_at_PDP-11.jpg" alt="959px-Ken_Thompson_sitting_and_Dennis_Ritchie_at_PDP-11.jpg" />
+</p>
+</div>
+
+</section>
+<section id="slide-unix-philosophy">
+<h3 id="unix-philosophy"><a id="org5d90921"></a><a href="https://en.wikipedia.org/wiki/Unix_philosophy">Unix Philosophy</a></h3>
+<ol>
+<li>Make each program do one thing well. To do a new job, build afresh rather than complicate old programs by adding new "features".</li>
+<li>Expect the output of every program to become the input to another, as yet unknown, program. Don't clutter output with extraneous information. Avoid stringently columnar or binary input formats. Don't insist on interactive input.</li>
+<li>Design and build software, even operating systems, to be tried early, ideally within weeks. Don't hesitate to throw away the clumsy parts and rebuild them.</li>
+<li>Use tools in preference to unskilled help to lighten a programming task, even if you have to detour to build the tools and expect to throw some of them out after you've finished using them.</li>
+
+</ol>
+
+</section>
+<section id="slide-unix-philosophy-simplified">
+<h3 id="unix-philosophy-simplified"><a id="org51a4c77"></a><a href="https://en.wikipedia.org/wiki/Unix_philosophy">Unix Philosophy</a> (simplified for us)</h3>
+<ol>
+<li>Make each program do one thing well.</li>
+<li>Expect the output of every program to become the input to another, as yet unknown, program.</li>
+
+</ol>
+
+</section>
+<section id="slide-org3051b56">
+<h3 id="org3051b56">One more thing</h3>
+<p>
+In *nix systems, everything is text.
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-do-one-thing-well">
+<h2 id="do-one-thing-well"><a id="org5a57864"></a>Do one thing well</h2>
+<p>
+Why are there so many programs?
+</p>
+
+<div class="org-src-container">
+
+<pre  class="src src-shell"><code trim>ls /usr/bin
+</code></pre>
+</div>
+
+</section>
+<section id="slide-ls-usr-bin">
+<h3 id="ls-usr-bin"><a id="orgf5c7352"></a></h3>
+
+<div class="figure">
+<p><img src="./img/ls-usr-bin.png" alt="ls-usr-bin.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-ls-usr-bin-annotated">
+<h3 id="ls-usr-bin-annotated"><a id="org491925a"></a></h3>
+
+<div class="figure">
+<p><img src="./img/ls-usr-bin-annotate.png" alt="ls-usr-bin-annotate.png" />
+</p>
+</div>
+
+
+</section>
+<section id="slide-man-page-yes">
+<h3 id="man-page-yes"><a id="org449cc9a"></a></h3>
+
+<div class="figure">
+<p><img src="./img/man-page-yes.png" alt="man-page-yes.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-do-one-thing-well-recap">
+<h3 id="do-one-thing-well-recap"><a id="orgeca11ad"></a>Do one thing well.</h3>
+<ul>
+<li><code>ls</code> - list directory contents</li>
+<li><code>sort</code> - sort or merge records (lines) of text and binary files</li>
+<li><code>zip</code> - package and compress (archive) files</li>
+<li>etc&#x2026;</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-shell-io">
+<h2 id="shell-io"><a id="org55283d2"></a>Output &lt;-&gt; Input</h2>
+<p>
+Expect output to become input to another, as yet unknown program.
+</p>
+
+</section>
+<section id="slide-org8e3d959">
+<h3 id="org8e3d959">Streams and Pipes</h3>
+<p>
+<code>&gt;</code> <code>&gt;&gt;</code> <code>&lt;</code> <code>&lt;&lt;</code> <code>|</code>
+</p>
+
+</section>
+<section id="slide-shell-io-streams">
+<h3 id="shell-io-streams"><a id="org20d5400"></a>Streams</h3>
+<ul>
+<li><code>stdin</code></li>
+<li><code>stdout</code></li>
+<li><code>sterr</code></li>
+
+</ul>
+
+</section>
+<section id="slide-org9ffb76d">
+<h4 id="org9ffb76d"></h4>
+
+<div class="figure">
+<p><img src="./img/linux-io-streams-01.png" alt="linux-io-streams-01.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-org8184855">
+<h4 id="org8184855"></h4>
+
+<div class="figure">
+<p><img src="./img/linux-io-streams-02-errors-in-output.png" alt="linux-io-streams-02-errors-in-output.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-org478b3e5">
+<h4 id="org478b3e5">Errors in our Output?</h4>
+<p>
+By default, both <code>sterr</code> and <code>stdout</code> are printed to the screen.
+</p>
+
+<p>
+We can control this a bit, and have those streams redirected to files.
+</p>
+
+</section>
+<section id="slide-org2a8e865">
+<h3 id="org2a8e865">Stream Redirection</h3>
+<ul>
+<li><code>&gt;</code> and <code>&gt;&gt;</code> - Redirect (or append) <i>to</i> a file.</li>
+<li><code>&lt;</code> and <code>&lt;&lt;</code> - Redirect <i>from</i> a file. Google for nuances of this!</li>
+
+</ul>
+</section>
+<section id="slide-org26c25ce">
+<h4 id="org26c25ce"></h4>
+
+<div class="figure">
+<p><img src="./img/linux-io-streams-03-redirect-stout.png" alt="linux-io-streams-03-redirect-stout.png" />
+</p>
+</div>
+</section>
+<section id="slide-orga92e82b">
+<h4 id="orga92e82b"></h4>
+
+<div class="figure">
+<p><img src="./img/linux-io-streams-04-redirect-stderr.png" alt="linux-io-streams-04-redirect-stderr.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-shell-io-pipes">
+<h3 id="shell-io-pipes"><a id="orgd02208e"></a>Pipes</h3>
+<p>
+The action of "piping" the output of one command into another.
+</p>
+
+<p>
+What many of us are used to:
+</p>
+
+<div class="org-src-container">
+
+<pre  class="src src-shell"><code trim>cat some.log | grep <span style="color: #98be65;">'something'</span>
+ls -alh | grep <span style="color: #98be65;">'another-thing'</span>
+</code></pre>
+</div>
+
+</section>
+<section id="slide-shell-io-rules-of-thumb">
+<h3 id="shell-io-rules-of-thumb"><a id="orgbf6673e"></a>IO Rule of thumbs</h3>
+<ul>
+<li>If you're having the output from one command go into the input of another command, use a pipe <code>|</code></li>
+<li>If you're passing data between "file" like things, then use stream redirection</li>
+
+</ul>
+
+</section>
+<section id="slide-shell-io-resources">
+<h3 id="shell-io-resources"><a id="orgcf04563"></a>IO Resources</h3>
+<ul>
+<li><a href="https://thoughtbot.com/blog/input-output-redirection-in-the-shell">https://thoughtbot.com/blog/input-output-redirection-in-the-shell</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials/an-introduction-to-linux-i-o-redirection">https://www.digitalocean.com/community/tutorials/an-introduction-to-linux-i-o-redirection</a></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-small-programs-general-groups">
+<h2 id="small-programs-general-groups"><a id="orgc3ac799"></a>General Groups of Programs</h2>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Working with files</td>
+<td class="org-left"><code>ls</code> <code>cd</code> <code>find</code> <code>mv</code> <code>cp</code> <code>rm</code></td>
+</tr>
+
+<tr>
+<td class="org-left">Working with streams of text</td>
+<td class="org-left"><code>cat</code> <code>grep</code> <code>sed</code> <code>awk</code> <code>sort</code> <code>uniq</code></td>
+</tr>
+
+<tr>
+<td class="org-left">Archives (collections of files)</td>
+<td class="org-left"><code>zip</code> <code>unzip</code> <code>tar</code></td>
+</tr>
+</tbody>
+</table>
+
+</section>
+</section>
+<section>
+<section id="slide-command-find">
+<h2 id="command-find"><a id="org71101d1"></a>Find</h2>
+<div class="org-src-container">
+
+<pre  class="src src-shell"><code trim>find . -type f       <span style="color: #5B6268;"># </span><span style="color: #5B6268;">only files</span>
+find . -type d       <span style="color: #5B6268;"># </span><span style="color: #5B6268;">only directories</span>
+find . -size +1M     <span style="color: #5B6268;"># </span><span style="color: #5B6268;">everything over 1M</span>
+find . -name <span style="color: #98be65;">'*.log'</span> <span style="color: #5B6268;"># </span><span style="color: #5B6268;">anything that ends with .log</span>
+</code></pre>
+</div>
+
+
+</section>
+<section id="slide-command-find-doing-stuff">
+<h3 id="command-find-doing-stuff"><a id="orga01acd3"></a>Find (doing stuff)</h3>
+<div class="org-src-container">
+
+<pre  class="src src-shell"><code trim>find . -size +1M -exec du -sh {} <span style="color: #98be65;">\;</span>                 <span style="color: #5B6268;"># </span><span style="color: #5B6268;">give the "disk usage" of each file find finds</span>
+find . -name <span style="color: #98be65;">'*.php.txt'</span> -exec rm {} <span style="color: #98be65;">\;</span>             <span style="color: #5B6268;"># </span><span style="color: #5B6268;">Find all files matching something, and rm them!</span>
+find . -name <span style="color: #98be65;">'*.log'</span> -exec grep <span style="color: #98be65;">'search-term'</span> {} <span style="color: #98be65;">\;</span> <span style="color: #5B6268;"># </span><span style="color: #5B6268;">find log files, and then grep for a string</span>
+</code></pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org29c9cc2">
+<h2 id="org29c9cc2">Difference of <code>zip</code> and <code>tar</code></h2>
+<ul>
+<li><a href="https://stackoverflow.com/a/1632565/6107112">https://stackoverflow.com/a/1632565/6107112</a></li>
+<li><code>zip</code> is a <i>collection</i> of compressed files.</li>
+<li><code>tar.gz</code> is a <i>compressed</i> collection of files.</li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: true,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+overview: true,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: './reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+ { src: './reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: './reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: './reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: './reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+});
+</script>
+</body>
+</html>

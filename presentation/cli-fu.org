@@ -1,0 +1,187 @@
+#+OPTIONS: num:nil toc:nil reveal_title_slide:nil
+# #+REVEAL_TRANS: Fade
+#+REVEAL_THEME: none
+#+REVEAL_EXTRA_CSS: style.css
+# #+REVEAL_DEFAULT_SLIDE_BACKGROUND_SIZE: 1400px
+# #+REVEAL_HLEVEL: 1
+#+TITLE: cli-Fu
+#+Author: Benjamin Turner
+
+* CLI-FU!
+  :PROPERTIES:
+  :CUSTOM_ID: intro
+  :END:
+
+* First: History
+  :PROPERTIES:
+  :CUSTOM_ID: history
+  :END:
+** 
+   :PROPERTIES:
+   :CUSTOM_ID: thompson-ritchie-working
+   :END:
+   
+   [[file:./img/959px-Ken_Thompson_sitting_and_Dennis_Ritchie_at_PDP-11.jpg]]
+
+** [[https://en.wikipedia.org/wiki/Unix_philosophy][Unix Philosophy]]
+   :PROPERTIES:
+   :CUSTOM_ID: unix-philosophy
+   :END:
+   1. Make each program do one thing well. To do a new job, build afresh rather than complicate old programs by adding new "features".
+   2. Expect the output of every program to become the input to another, as yet unknown, program. Don't clutter output with extraneous information. Avoid stringently columnar or binary input formats. Don't insist on interactive input.
+   3. Design and build software, even operating systems, to be tried early, ideally within weeks. Don't hesitate to throw away the clumsy parts and rebuild them.
+   4. Use tools in preference to unskilled help to lighten a programming task, even if you have to detour to build the tools and expect to throw some of them out after you've finished using them.
+
+** [[https://en.wikipedia.org/wiki/Unix_philosophy][Unix Philosophy]] (simplified for us)
+   :PROPERTIES:
+   :CUSTOM_ID: unix-philosophy-simplified
+   :END:
+   1. Make each program do one thing well.
+   2. Expect the output of every program to become the input to another, as yet unknown, program.
+
+** One more thing
+
+   In *nix systems, everything is text.
+
+* Do one thing well
+  :PROPERTIES:
+  :CUSTOM_ID: do-one-thing-well
+  :END:
+
+Why are there so many programs?
+
+#+BEGIN_SRC shell
+ls /usr/bin
+#+END_SRC
+
+** 
+   :PROPERTIES:
+   :CUSTOM_ID: ls-usr-bin
+   :END:
+   file:./img/ls-usr-bin.png
+
+** 
+   :PROPERTIES:
+   :CUSTOM_ID: ls-usr-bin-annotated
+   :END:
+   file:./img/ls-usr-bin-annotate.png
+   
+
+** 
+   :PROPERTIES:
+   :CUSTOM_ID: man-page-yes
+   :END:
+   file:./img/man-page-yes.png
+
+** Do one thing well.
+   :PROPERTIES:
+   :CUSTOM_ID: do-one-thing-well-recap
+   :END:
+
+- =ls= - list directory contents
+- =sort= - sort or merge records (lines) of text and binary files
+- =zip= - package and compress (archive) files
+- etc...
+
+* Output <-> Input 
+  :PROPERTIES:
+  :CUSTOM_ID: shell-io
+  :END:
+
+Expect output to become input to another, as yet unknown program.
+
+** Streams and Pipes
+   =>= =>>= =<= =<<= =|=
+
+** Streams
+   :PROPERTIES:
+   :CUSTOM_ID: shell-io-streams
+   :END:
+      - =stdin=
+      - =stdout=
+      - =sterr=
+	
+*** 
+    file:./img/linux-io-streams-01.png
+
+*** 
+    file:./img/linux-io-streams-02-errors-in-output.png
+
+*** Errors in our Output?
+    
+By default, both =sterr= and =stdout= are printed to the screen.
+
+We can control this a bit, and have those streams redirected to files.
+
+** Stream Redirection
+      - =>= and =>>= - Redirect (or append) /to/ a file.
+      - =<= and =<<= - Redirect /from/ a file. Google for nuances of this!
+*** 
+    file:./img/linux-io-streams-03-redirect-stout.png
+*** 
+    file:./img/linux-io-streams-04-redirect-stderr.png
+
+** Pipes
+   :PROPERTIES:
+   :CUSTOM_ID: shell-io-pipes
+   :END:
+   
+   The action of "piping" the output of one command into another.
+
+   What many of us are used to:
+   
+    #+BEGIN_SRC shell
+    cat some.log | grep 'something'
+    ls -alh | grep 'another-thing'
+    #+END_SRC
+
+** IO Rule of thumbs
+   :PROPERTIES:
+   :CUSTOM_ID: shell-io-rules-of-thumb
+   :END:
+   - If you're having the output from one command go into the input of another command, use a pipe =|=
+   - If you're passing data between "file" like things, then use stream redirection
+
+** IO Resources
+   :PROPERTIES:
+   :CUSTOM_ID: shell-io-resources
+   :END:
+   - [[https://thoughtbot.com/blog/input-output-redirection-in-the-shell]]
+   - https://www.digitalocean.com/community/tutorials/an-introduction-to-linux-i-o-redirection
+
+* General Groups of Programs
+  :PROPERTIES:
+  :CUSTOM_ID: small-programs-general-groups
+  :END:
+  | Working with files              | =ls= =cd= =find= =mv= =cp= =rm=        |
+  | Working with streams of text    | =cat= =grep= =sed= =awk= =sort= =uniq= |
+  | Archives (collections of files) | =zip= =unzip= =tar=                    |
+
+* Find
+  :PROPERTIES:
+  :CUSTOM_ID: command-find
+  :END:
+
+  #+BEGIN_SRC shell
+  find . -type f       # only files
+  find . -type d       # only directories
+  find . -size +1M     # everything over 1M
+  find . -name '*.log' # anything that ends with .log
+  #+END_SRC
+  
+
+** Find (doing stuff)
+   :PROPERTIES:
+   :CUSTOM_ID: command-find-doing-stuff
+   :END:
+  
+   #+BEGIN_SRC shell
+   find . -size +1M -exec du -sh {} \;                 # give the "disk usage" of each file find finds
+   find . -name '*.php.txt' -exec rm {} \;             # Find all files matching something, and rm them!
+   find . -name '*.log' -exec grep 'search-term' {} \; # find log files, and then grep for a string
+   #+END_SRC
+
+* Difference of =zip= and =tar=
+  - [[https://stackoverflow.com/a/1632565/6107112]]
+  - =zip= is a /collection/ of compressed files.
+  - =tar.gz= is a /compressed/ collection of files.
